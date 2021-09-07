@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load courses_custom_tags %}
+{% load humanize %}
+
+{% block title %}
+   <title>Online-Tutions | {{course.name}}</title>
+{% endblock  %}
+
+
+{% block content %}
+<style>
+    .no-preview{
+        cursor: not-allowed;
+    }   
+    a:hover{
+        text-decoration: none;
+    }
+
+    a{
+        color: rgb(61, 59, 59);
+    }
+
+    .active-video-link{
+        color: rgb(206, 202, 196);
+    }
+
+    .active-video-link:hover{
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+    }
+    .lessons-list{
+        max-height:600px;
+        min-height:600px;
+    }
+</style>
+<main>
+        <!--? slider Area Start-->
+        <section class="slider-area slider-area2" style="background-image: url('{% static "img/subjects/hero2.png" %}');">
+            <div class="slider-active">
+                <!-- Single Slider -->
+                <div class="single-slider slider-height2">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-11 col-md-12">
+                                <div class="hero__caption hero__caption2">
+                                    <h1 data-animation="bounceIn" data-delay="0.2s">{{course.name}}</h1>
+                                    <!-- breadcrumb Start-->
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="{% url 'courses' %}">All Courses</a></li> 
+                                        </ol>
+                                    </nav>
+                                    <!-- breadcrumb End -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+            </div>
+        </section>
+
+        <section id="main" class="mt-5">
+            <div class="container">
+                <div class="row">
+                {% comment %} ########lesson video player & info############ {% endcomment %}
+                    <div class="col-lg-8">
+                    {% comment %} ############lesson youttube video########## {% endcomment %}
+                        <iframe width="100%" height="95%" src="https://www.youtube.com/embed/{{video.video_id}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    
+                    </div>
+                {% comment %} ########lesson play section############ {% endcomment %}    
+                {% comment %} #############lessons play list###########lecture list in particular course {% endcomment %}
+                    <div class="col-lg-4">
+                        <ul class="list-group lessons-list">
+                            {% for v in videos %}
+
+                            <a href="?lecture={{v.serial_number}}"><li class="list-group-item list-group-item-action {% if v == video %} active {% endif %}">{% if v == video %}<i class="far fa-play-circle"></i>{% endif %} {{v}}</li></a>
+                            
+                            
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% comment %} ########lesson play section ########### {% endcomment %}
+                </div>
+            </div>
+        
+        </section>
+</main>
+{% endblock %}

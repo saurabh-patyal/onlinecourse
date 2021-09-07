@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load courses_custom_tags %}
+{% load humanize %}
+
+{% block title %}
+   <title>Online-Tutions | checkout</title>
+{% endblock  %}
+
+
+{% block content %}
+<style>
+    .no-preview{
+        cursor: not-allowed;
+    }   
+    a:hover{
+        text-decoration: none;
+    }
+
+    a{
+        color: rgb(61, 59, 59);
+    }
+
+    .active-video-link{
+        color: rgb(206, 202, 196);
+    }
+
+    .active-video-link:hover{
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+    }
+    .lessons-list{
+        max-height:600px;
+        min-height:600px;
+    }
+</style>
+<main>
+
+        <!--? slider Area Start-->
+        <section class="slider-area slider-area2" style="background-image: url('{% static "img/subjects/hero2.png" %}');">
+            <div class="slider-active">
+                <!-- Single Slider -->
+                <div class="single-slider slider-height2">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-11 col-md-12">
+                                <div class="hero__caption hero__caption2">
+                                    <h1 data-animation="bounceIn" data-delay="0.2s"> Checkout {{course.name}}</h1>
+                                    <!-- breadcrumb Start-->
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="{% url 'courses' %}">All Courses</a></li> 
+                                        </ol>
+                                    </nav>
+                                    <!-- breadcrumb End -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+            </div>
+        </section>
+
+        <section id="main" class="mt-5">
+            <div class="courses-area section-padding40 fix">
+                <div class="container">
+                    <div class="row ">
+                        <div class="col mr-auto ">
+                            <div class="card ml-auto" style="width: 30rem;">
+                                <img class="card-img-top" src="{{course.thumbnail.url}}" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{course.name}}</h5>
+                                    <p class="card-text m-0 p-0">
+                                        Save {{course.discount}}%
+                                        <br>
+                                        <span class="price">
+                                            <del>{{course.price}}</del>
+                                            &nbsp;
+
+                                            <span>{% cal_sellprice course.price course.discount as value %} {{value|intcomma}}</span>
+                                        </span>
+
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="col ">
+                            <div>
+                            {% if not is_user_course_exsists  %}
+                                <p class="display-5">You Are Going To Checkout {{course.name}} Course</p>
+                                <hr>
+                                <p class="display-5">Payable Amount : <b>{% cal_sellprice course.price course.discount as value %}
+                                        {{value|intcomma}}</b></p>
+                            {% else %}
+                                <p class="display-5">You Already Purchased <b>{{course.name}}</b> Course</p>
+                            {% endif %}
+                                
+                                {% if not is_user_course_exsists  %}
+                                    <a class="btn btn-light border" href="?action=create_payment">Continue to Payment</a>
+                                {% else %}
+                                    <a class="btn btn-light border" href="{{course.get_url}}">start Course</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+        </section>
+</main>
+{% if order %}
+    {% if not is_user_course_exsists %}
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+            var options = {
+                "key": "rzp_test_5QtAwdzDyOPYLZ", // Enter the Key ID generated from the Dashboard
+                "name": "Webxpi.com",
+                "description": "Payment For {{course.name}}",
+                "image": "https://example.com/your_logo",
+                "order_id": "{{order.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "callback_url": "{% url 'verify_payment' %}",
+                "prefill": {
+                    "name": "{{user.first_name}}",
+                    "email": "{{user.email}}",
+                    
+                },
+                
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+            
+        </script>
+    {% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'accounts/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} <title>Online Course | Register</title>{% endblock %}
+{% block  content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+
+<!-- ============================ COMPONENT REGISTER   ================================= -->
+	<div class="card mx-auto" style="max-width:30%; margin-top:40px;">
+      <article class="card-body">
+      {% include 'alerts.html' %}
+		<header class="mb-4"><a href="{% url 'home' %}"><i class="fas fa-home" aria-hidden="true"></i></a><h1 class="card-title text-center">Login</h1></header>
+		<form action="" method='POST'>
+        {% csrf_token %}
+            {{form | crispy}}
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary btn-block">
+            </div> <!-- form-group// -->     
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="autoSizingCheck" onclick="showPassword()">
+                <label class="form-check-label" for="autoSizingCheck">
+                    Show Password
+                </label>
+            </div> 
+        </form>		
+	 </article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <p class="text-center mt-4">Don't!Have An Account? <a href="{% url 'signup' %}" class="text-primary">Signup</a></p>
+    <br><br>
+<!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}
