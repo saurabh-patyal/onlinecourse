@@ -43,3 +43,11 @@ h1.bredcrum-title{
 #logout-btn{
     padding: 20px 20px !important;
 }
+.main-header .main-menu ul ul.submenu{
+    background-color: #240707;
+    color: #fff;
+}
+
+.main-header .main-menu ul ul.submenu li a{
+    color: #fff;
+}

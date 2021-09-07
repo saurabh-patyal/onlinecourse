@@ -122,3 +122,13 @@ def verify_payment(request):
 @login_required(login_url='login')
 def payment_success(request):
    return render(request,'verify_payment.html')
+
+###################fetching user related courses for user dashboard##############
+@login_required(login_url='login')
+def mycourses(request):
+   user=request.user
+   user_course=UserCourse.objects.filter(user = user)
+   context={
+      'user_courses':user_course,
+   }
+   return render(request,'mycourses.html',context)
